@@ -2,26 +2,41 @@
 using BussinessLogic.DTO;
 using DataAccess.Entities;
 using Mapster;
+using Microsoft.EntityFrameworkCore;
 
 namespace BussinessLogic
 {
-	public class ServicePrueba
-	{
+    public class ServicePrueba
+    {
+
+
         private MydbContext _dbContext;
 
-        public ServicePrueba()
+        public ServicePrueba(MydbContext mydbContext)
         {
-            _dbContext = new MydbContext();
-
+            _dbContext = mydbContext;
         }
+
 
         public IList<CategoriaDTO> GetAllCategorias()
         {
-            List<Categoria> resultado = _dbContext.Categoria.ToList();
+            // List<Categoria> categoria = _dbContext.Categoria.Include(x => x.Producto).ToList();
+
+            List<Categoria> categoria = _dbContext.Categoria.ToList();
+            
+
+            List<CategoriaDTO> categoriaDTO = categoria.Adapt<List<CategoriaDTO>>().ToList();
+
+            foreach (var item in categoriaDTO)
+            {
+                int cantidadProductos = _dbContext.Producto.Where(x => x.IdCategoria == item.Id).Count();
+                item.CantidadProductos = cantidadProductos;
+            }
+
+            return categoriaDTO;
 
 
-            List<CategoriaDTO> categorias = resultado.Adapt<IList<CategoriaDTO>>().ToList();
-            return categorias;
+
         }
 
         public CategoriaDTO GetCategoriaById(int id)

@@ -11,7 +11,7 @@ namespace BussinessLogic.DTO
 
         public int? IdCategoria { get; set; }
 
-        public virtual CategoriaDTO? IdCategoriaNavigation { get; set; }
+        // public virtual CategoriaDTO? IdCategoriaNavigation { get; set; }
     }
 }
 

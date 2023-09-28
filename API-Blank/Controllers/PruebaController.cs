@@ -13,33 +13,45 @@ namespace API_Blank.Controllers
     [Route("api/[controller]")]
     public class PruebaController : Controller
     {
-        private ServicePrueba service;
+        private ServicePrueba _service;
 
-        public PruebaController()
+        public PruebaController(ServicePrueba service)
         {
-            service = new ServicePrueba();
+            _service = service;
         }
         // GET: api/values
         [HttpGet]
         [Route("/categorias")]
         public IList<CategoriaDTO> GetCategorias()
         {
-            IList<CategoriaDTO> categorias = service.GetAllCategorias();
+            IList<CategoriaDTO> categorias = _service.GetAllCategorias();
             return categorias;
-        }
-
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
         }
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        [Route("/categorias")]
+        public void PostCategoria([FromBody]CategoriaDTO categoria)
         {
+            _service.PostCategoria(categoria);
         }
+
+        // GET api/values/5
+        [HttpGet]
+        [Route("/categorias/{id}")]
+        //public CategoriaDTO GetCategoriaById(int id)
+        //{
+        //    CategoriaDTO categoria = service.GetCategoriaById(id);
+        //    return categoria;
+        //}
+
+        // POST api/values
+        //[HttpPost]
+        //[Route("/categorias")]
+        //public void ActualizarCategoria([FromBody]CategoriaDTO categoria)
+        //{
+        //    service.PostCategoria(categoria);
+        //}
 
         // PUT api/values/5
         [HttpPut("{id}")]
