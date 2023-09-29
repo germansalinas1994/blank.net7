@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BussinessLogic;
 using BussinessLogic.DTO;
+using BussinessLogic.Services;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -22,36 +22,24 @@ namespace API_Blank.Controllers
         // GET: api/values
         [HttpGet]
         [Route("/categorias")]
-        public IList<CategoriaDTO> GetCategorias()
+        public async Task<IList<CategoriaDTO>> GetCategorias()
         {
-            IList<CategoriaDTO> categorias = _service.GetAllCategorias();
+            IList<CategoriaDTO> categorias = await _service.GetAllCategorias();
             return categorias;
         }
 
         // POST api/values
         [HttpPost]
         [Route("/categorias")]
-        public void PostCategoria([FromBody]CategoriaDTO categoria)
+        public async Task<CategoriaDTO> PostCategoria([FromBody]CategoriaDTO categoria)
         {
-            _service.PostCategoria(categoria);
+            // _service.PostCategoria(categoria);
+
+            CategoriaDTO cat = await _service.PostCategoria(categoria);
+            return cat;
         }
 
-        // GET api/values/5
-        [HttpGet]
-        [Route("/categorias/{id}")]
-        //public CategoriaDTO GetCategoriaById(int id)
-        //{
-        //    CategoriaDTO categoria = service.GetCategoriaById(id);
-        //    return categoria;
-        //}
-
-        // POST api/values
-        //[HttpPost]
-        //[Route("/categorias")]
-        //public void ActualizarCategoria([FromBody]CategoriaDTO categoria)
-        //{
-        //    service.PostCategoria(categoria);
-        //}
+     
 
         // PUT api/values/5
         [HttpPut("{id}")]
@@ -61,8 +49,9 @@ namespace API_Blank.Controllers
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
+            await _service.DeleteCategoria(id);
         }
     }
 }
