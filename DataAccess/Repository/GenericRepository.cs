@@ -11,7 +11,7 @@ namespace DataAccess.Repository
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         //quiero hacer un singleton de la base de datos
-        private readonly DbContext _context;
+        protected readonly MydbContext _context;
         public GenericRepository(MydbContext mydbContext)
         {
             _context = mydbContext;

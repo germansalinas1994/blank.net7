@@ -1,6 +1,8 @@
 ﻿using System;
 using DataAccess.IRepository;
 using DataAccess.Entities;
+using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Math.EC.Rfc7748;
 
 namespace DataAccess.Repository
 {
@@ -9,34 +11,22 @@ namespace DataAccess.Repository
 
         
         //que hace esta linea
-        public CategoriaRepository(MydbContext mydbContext) : base(mydbContext)
+        public CategoriaRepository(MydbContext _context) : base(_context)
         {
         }
 
-        
+        public async Task<IEnumerable<Categoria>> GetAllCategoriasProductos()
+        {
+            //busco todas las categorias con el producto incluido
+            return await _context.Categoria.Include(c => c.Producto).ToListAsync();
+        }
 
+        public Task<int> GetCantidadProductosByCategoria(int idCategoria)
+        {
+            //busco la categoria por id y cuento la cantidad de productos que tiene
+            return _context.Categoria.Where(c => c.Id == idCategoria).Select(c => c.Producto.Count).FirstOrDefaultAsync();
 
-
-        //public Task<IEnumerable<Categoria>> GetByDescripcion(string descripcion)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public Task<IEnumerable<Categoria>> GetByNombre(string nombre)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public Task<long> GetCount()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public Task<long> GetProductosByCategoria(int idCategoria)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
+        }
     }
 }
 

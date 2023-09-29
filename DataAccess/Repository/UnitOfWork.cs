@@ -13,7 +13,7 @@ namespace DataAccess.Repository
     public class UnitOfWork : IUnitOfWork
     {
 
-        private readonly MydbContext _context;
+        protected readonly MydbContext _context;
         private IDbContextTransaction _transaction;
 
 
@@ -24,8 +24,8 @@ namespace DataAccess.Repository
         {
             _context = context;
 
-            ProductoRepository = new ProductoRepository(context);
-            CategoriaRepository = new CategoriaRepository(context);
+            ProductoRepository = new ProductoRepository(_context);
+            CategoriaRepository = new CategoriaRepository(_context);
         }
 
         public IProductoRepository ProductoRepository { get; set; }

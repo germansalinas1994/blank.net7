@@ -15,7 +15,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 // builder.
-builder.Services.AddScoped<ServicePrueba>();
 
 // ADD Entity framework con mysql
 
@@ -23,6 +22,9 @@ builder.Services.AddDbContext<MydbContext>(options => options.UseMySQL(builder.C
 
 //agrego la inyeccion de dependencia de los repositorios y el UnitOfWork
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+builder.Services.AddScoped<ServicePrueba>();
+
 
 builder.Services.AddCors(opciones =>
 {

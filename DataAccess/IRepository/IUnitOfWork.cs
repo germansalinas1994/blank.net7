@@ -16,10 +16,6 @@ namespace DataAccess.IRepository
         //el beginTransactionAsync es para que se inicie la transaccion
         Task BeginTransactionAsync();
 
-        //el saveChangesAsync es para que se guarden los cambios en la base de datos
-        //Task<int> SaveChangesAsync();
-        //Aca va la logica de la transaccion, si se hace commit o rollback, esto es para que no se repita codigo
-
         //el commitAsync es para que se impacten los cambios en la base de datos
         Task CommitAsync();
 
