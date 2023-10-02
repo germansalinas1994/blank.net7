@@ -20,10 +20,13 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<MydbContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("dbConnection")));
 
-//agrego la inyeccion de dependencia de los repositorios y el UnitOfWork
-builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
-
+//El AddScoped es para que se cree un nuevo contexto cada vez que se haga un request
+//El addTransient es para que se cree un nuevo contexto cada vez que se llame a la clase
+//La diferencia entre AddScoped y AddTransient es que el AddScoped crea un contexto por cada request y el AddTransient crea un contexto por cada vez que se lo llama
+//El AddSingleton es para que se cree un contexto por una unica vez y se reutilice en todos los request
 builder.Services.AddScoped<ServicePrueba>();
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 
 builder.Services.AddCors(opciones =>

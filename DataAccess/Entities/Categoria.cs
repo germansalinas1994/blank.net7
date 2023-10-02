@@ -10,5 +10,4 @@ public partial class Categoria
     public string? Descripcion { get; set; }
 
     public virtual ICollection<Producto> Producto { get; set; } = new List<Producto>();
-
 }

@@ -48,7 +48,7 @@ namespace DataAccess.Migrations
                         .HasMaxLength(45)
                         .HasColumnType("varchar(45)");
 
-                    b.Property<int?>("IdCategoria")
+                    b.Property<int?>("Id")
                         .HasColumnType("int")
                         .HasColumnName("Id_Categoria");
 
@@ -59,7 +59,7 @@ namespace DataAccess.Migrations
                     b.HasKey("Id")
                         .HasName("PRIMARY");
 
-                    b.HasIndex(new[] { "IdCategoria" }, "Id_Categoria_FK_idx");
+                    b.HasIndex(new[] { "Id" }, "Id_Categoria_FK_idx");
 
                     b.ToTable("Producto");
                 });
@@ -84,12 +84,12 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("DataAccess.Entities.Producto", b =>
                 {
-                    b.HasOne("DataAccess.Entities.Categoria", "IdCategoriaNavigation")
+                    b.HasOne("DataAccess.Entities.Categoria", "IdNavigation")
                         .WithMany("Producto")
-                        .HasForeignKey("IdCategoria")
+                        .HasForeignKey("Id")
                         .HasConstraintName("Id_Categoria_FK");
 
-                    b.Navigation("IdCategoriaNavigation");
+                    b.Navigation("IdNavigation");
                 });
 
             modelBuilder.Entity("DataAccess.Entities.Categoria", b =>

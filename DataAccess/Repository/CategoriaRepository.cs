@@ -21,10 +21,10 @@ namespace DataAccess.Repository
             return await _context.Categoria.Include(c => c.Producto).ToListAsync();
         }
 
-        public Task<int> GetCantidadProductosByCategoria(int idCategoria)
+        public Task<int> GetCantidadProductosByCategoria(int Id)
         {
             //busco la categoria por id y cuento la cantidad de productos que tiene
-            return _context.Categoria.Where(c => c.Id == idCategoria).Select(c => c.Producto.Count).FirstOrDefaultAsync();
+            return _context.Categoria.Where(c => c.Id == Id).Select(c => c.Producto.Count).FirstOrDefaultAsync();
 
         }
     }

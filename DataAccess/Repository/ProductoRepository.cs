@@ -13,14 +13,14 @@ namespace DataAccess.Repository
         {
         }
 
-        // public IList<Producto> GetProductosByCategoria(int idCategoria)
+        // public IList<Producto> GetProductosByCategoria(int Id)
         // {
-        //     return _context.Productos.Where(p => p.IdCategoria == idCategoria).ToList();
+        //     return _context.Productos.Where(p => p.Id == Id).ToList();
         // }
 
-        // public IList<Producto> GetProductosByCategoriaAndNombre(int idCategoria, string nombre)
+        // public IList<Producto> GetProductosByCategoriaAndNombre(int Id, string nombre)
         // {
-        //     return _context.Productos.Where(p => p.IdCategoria == idCategoria && p.Nombre.Contains(nombre)).ToList();
+        //     return _context.Productos.Where(p => p.Id == Id && p.Nombre.Contains(nombre)).ToList();
         // }
 
         // public IList<Producto> GetProductosByNombre(string nombre)
@@ -38,9 +38,9 @@ namespace DataAccess.Repository
         //     return _context.Productos.Where(p => p.Precio == precio && p.Nombre.Contains(nombre)).ToList();
         // }
 
-        // public IList<Producto> GetProductosByPrecioAndCategoria(decimal precio, int idCategoria)
+        // public IList<Producto> GetProductosByPrecioAndCategoria(decimal precio, int Id)
         // {
-        //     return _context.Productos.Where(p => p.Precio == precio && p.IdCategoria == idCategoria).ToList();
+        //     return _context.Productos.Where(p => p.Precio == precio && p.Id == Id).ToList();
         // }
 
         

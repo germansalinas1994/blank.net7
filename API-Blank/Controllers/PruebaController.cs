@@ -11,15 +11,20 @@ using Microsoft.AspNetCore.Mvc;
 namespace API_Blank.Controllers
 {
     [Route("api/[controller]")]
-    public class PruebaController : Controller
+   public class PruebaController : Controller
     {
+
+        //Instancio el service que vamos a usar
         private ServicePrueba _service;
 
+        //Inyecto el service por el constructor
         public PruebaController(ServicePrueba service)
         {
             _service = service;
         }
         // GET: api/values
+
+        //Metodo para traer todas las categorias
         [HttpGet]
         [Route("/categorias")]
         public async Task<IList<CategoriaDTO>> GetCategorias()
@@ -29,9 +34,11 @@ namespace API_Blank.Controllers
         }
 
         // POST api/values
+
+        //Metodo para insertar una categoria
         [HttpPost]
         [Route("/categorias")]
-        public async Task<CategoriaDTO> PostCategoria([FromBody]CategoriaDTO categoria)
+        public async Task<CategoriaDTO> PostCategoria([FromBody] CategoriaDTO categoria)
         {
             // _service.PostCategoria(categoria);
 
@@ -39,20 +46,34 @@ namespace API_Blank.Controllers
             return cat;
         }
 
-     
+
 
         // PUT api/values/5
+        //Metodo para editar una categoria
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public async Task<CategoriaDTO> Put(int id, [FromBody] string value)
         {
+            CategoriaDTO categoriaEditada = await _service.EditarCategoria(id, value);
+            return categoriaEditada;
         }
 
         // DELETE api/values/5
+        //Metodo para eliminar una categoria, eliminacion fisica
         [HttpDelete("{id}")]
         public async Task Delete(int id)
         {
             await _service.DeleteCategoria(id);
         }
+
+        //Metodo para buscar categorias por algun criterio GetByCriteria
+
+        [HttpGet("/buscarCategoria")]
+        public async Task<IList<CategoriaDTO>> BuscarCategorias([FromQuery] string descripcion)
+        {
+            IList<CategoriaDTO> categorias = await _service.BuscarCategorias(descripcion);
+            return categorias;
+        }
+        
     }
 }
 

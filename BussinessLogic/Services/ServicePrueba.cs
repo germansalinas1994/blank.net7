@@ -4,45 +4,15 @@ using BussinessLogic.DTO;
 using DataAccess.IRepository;
 using DataAccess.Entities;
 using Mapster;
-using Microsoft.EntityFrameworkCore;
 
 namespace BussinessLogic.Services
 {
-    public class ServicePrueba
+  public class ServicePrueba
     {
-
-        // private static ServicePrueba _instance;
-        // private static readonly object _lock = new object();
-
-        // private readonly IUnitOfWork _unitOfWork;
-
-        // // El constructor privado evita que se cree una instancia desde fuera de la clase.
-        // private ServicePrueba(IUnitOfWork unitOfWork)
-        // {
-        //     _unitOfWork = unitOfWork;
-        // }
-
-        // // Método estático para obtener la única instancia del servicio.
-        // public static ServicePrueba GetInstance(IUnitOfWork unitOfWork)
-        // {
-        //     if (_instance == null)
-        //     {
-        //         lock (_lock)
-        //         {
-        //             if (_instance == null)
-        //             {
-        //                 _instance = new ServicePrueba(unitOfWork);
-        //             }
-        //         }
-        //     }
-        //     return _instance;
-        // }
-
-
-
-
+        //Instancio el UnitOfWork que vamos a usar
         private readonly IUnitOfWork _unitOfWork;
 
+        //Inyecto el UnitOfWork por el constructor, esto se hace para que se cree un nuevo contexto por cada vez que se llame a la clase
         public ServicePrueba(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
@@ -50,7 +20,7 @@ namespace BussinessLogic.Services
 
         public async Task<IList<CategoriaDTO>> GetAllCategorias()
         {
-            IEnumerable<Categoria> categorias = await _unitOfWork.CategoriaRepository.GetAll();
+            IList<Categoria> categorias = await _unitOfWork.CategoriaRepository.GetAll();
 
             IList<CategoriaDTO> categoriaDTO = categorias.Adapt<IList<CategoriaDTO>>();
 
@@ -58,7 +28,7 @@ namespace BussinessLogic.Services
             {
                 // item.CantidadProductos = item.Producto.Count();
 
-                    item.CantidadProductos = await _unitOfWork.CategoriaRepository.GetCantidadProductosByCategoria(item.Id);
+                item.CantidadProductos = await _unitOfWork.CategoriaRepository.GetCantidadProductosByCategoria(item.Id);
             }
 
             return categoriaDTO;
@@ -95,8 +65,48 @@ namespace BussinessLogic.Services
             bool borrado = await _unitOfWork.CategoriaRepository.Delete(id);
         }
 
+        public async Task<CategoriaDTO> EditarCategoria(int id, string value)
+        {
 
+            await _unitOfWork.BeginTransactionAsync();
 
+            // IList<Categoria> categoriasDescripcion = await _unitOfWork.CategoriaRepository.GetByCriteria(x => x.Descripcion == value);
+            // IList<Producto> categoriasId = await _unitOfWork.ProductoRepository.GetByCriteria(x => x.IdNavigation.Descripcion == value);
+
+            Categoria categoria = await _unitOfWork.CategoriaRepository.GetById(id);
+
+            if (categoria != null)
+            {
+                categoria.Descripcion = value;
+                await _unitOfWork.CategoriaRepository.Update(categoria);
+
+                await _unitOfWork.CommitAsync();
+
+                return categoria.Adapt<CategoriaDTO>();
+            }
+            else
+            {
+                await _unitOfWork.RollbackAsync();
+                throw new Exception("No se encontro la categoria");
+            }
+        }
+
+        public async Task<IList<CategoriaDTO>> BuscarCategorias(string descripcion)
+        {
+            //Puedo Buscar por si contiene el nombre o podria buscar por is es igual al nombre
+            // IList<Categoria> categorias = await _unitOfWork.CategoriaRepository.GetByCriteria(x => x.Descripcion.Contains(nombre));
+
+            IList<Categoria> categorias = await _unitOfWork.CategoriaRepository.GetByCriteria(x => x.Descripcion == descripcion);
+
+            IList<CategoriaDTO> categoriaDTO = categorias.Adapt<IList<CategoriaDTO>>();
+
+            foreach (var item in categoriaDTO)
+            {
+                item.CantidadProductos = await _unitOfWork.CategoriaRepository.GetCantidadProductosByCategoria(item.Id);
+            }
+
+            return categoriaDTO;
+        }
     }
 }
 
@@ -129,7 +139,7 @@ namespace BussinessLogic.Services
 
 //     foreach (var item in categoriaDTO)
 //     {
-//         int cantidadProductos = _dbContext.Producto.Where(x => x.IdCategoria == item.Id).Count();
+//         int cantidadProductos = _dbContext.Producto.Where(x => x.Id == item.Id).Count();
 //         item.CantidadProductos = cantidadProductos;
 //     }
 
